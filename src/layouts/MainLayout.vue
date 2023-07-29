@@ -8,7 +8,7 @@
           round
           icon="menu"
           aria-label="Menu"
-          @click="toggleLeftDrawer"
+          @click="leftDrawerOpen = !leftDrawerOpen"
           class="text-white"
         />
 
@@ -16,9 +16,10 @@
 
         <q-item id="user-button"></q-item>
         <q-item id="auth-links" dense>
-          <q-btn flat @click="SignIn" class="tex-white">Login</q-btn>
+          <q-btn to="/auth" flat class="tex-white">{{
+            token ? "Exit" : "Login"
+          }}</q-btn>
         </q-item>
-        
       </q-toolbar>
     </q-header>
 
@@ -38,7 +39,7 @@
             <q-item-section> Login </q-item-section>
           </q-item> -->
 
-          <q-item to="/catalog" exact clickable v-ripple>
+          <q-item to="/" exact clickable v-ripple>
             <q-item-section avatar>
               <q-icon name="store" />
             </q-item-section>
@@ -46,7 +47,7 @@
             <q-item-section> Catalog </q-item-section>
           </q-item>
 
-          <q-item to="/cart" exact clickable v-ripple>
+          <q-item to="/cart" v-if="token" exact clickable v-ripple>
             <q-item-section avatar>
               <q-icon name="shopping_cart" />
             </q-item-section>
@@ -54,49 +55,30 @@
             <q-item-section> Cart </q-item-section>
           </q-item>
 
-          <q-item to="/chat" exact clickable v-ripple>
+          <!-- <q-item to="/chat" exact clickable v-ripple>
             <q-item-section avatar>
               <q-icon name="chat" />
             </q-item-section>
 
             <q-item-section> Chat </q-item-section>
-          </q-item>
-
+          </q-item> -->
         </q-list>
       </q-scroll-area>
     </q-drawer>
 
     <q-page-container>
       <router-view v-slot="{ Component }">
-        <keep-alive exclude="product-card">
           <component :is="Component" />
-        </keep-alive>
       </router-view>
     </q-page-container>
   </q-layout>
 </template>
 
-<script>
+<script setup>
 import { defineComponent, ref } from "vue";
 
-export default defineComponent({
-  name: "MainLayout",
-  setup() {
-    const leftDrawerOpen = ref(false);
-
-    const SignIn = () => {
-      window.Clerk.openSignIn();
-    };
-
-    return {
-      leftDrawerOpen,
-      SignIn,
-      toggleLeftDrawer() {
-        leftDrawerOpen.value = !leftDrawerOpen.value;
-      },
-    };
-  },
-});
+const leftDrawerOpen = ref(false);
+const token = JSON.parse(localStorage.getItem("token"));
 </script>
 
 <style scoped>
