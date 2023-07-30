@@ -51,39 +51,39 @@ export default defineComponent({
 
     let localTotal;
 
-    const { mutate: addToOrder } = useMutation(
-      gql`
-        mutation MyMutation(
-          $card: String
-          $date: String
-          $code: String
-          $order_price: Int
-        ) {
-          insert_order_one(
-            object: {
-              card: $card
-              date: $date
-              code: $code
-              order_price: $order_price
-            }
-          ) {
-            id
-            card
-            code
-            date
-            order_price
-          }
-        }
-      `,
-      () => ({
-        variables: {
-          card: form.value.card,
-          code: form.value.code,
-          date: form.value.date,
-          order_price: localTotal,
-        },
-      })
-    );
+    // const { mutate: addToOrder } = useMutation(
+    //   gql`
+    //     mutation MyMutation(
+    //       $card: String
+    //       $date: String
+    //       $code: String
+    //       $order_price: Int
+    //     ) {
+    //       insert_order_one(
+    //         object: {
+    //           card: $card
+    //           date: $date
+    //           code: $code
+    //           order_price: $order_price
+    //         }
+    //       ) {
+    //         id
+    //         card
+    //         code
+    //         date
+    //         order_price
+    //       }
+    //     }
+    //   `,
+    //   () => ({
+    //     variables: {
+    //       card: form.value.card,
+    //       code: form.value.code,
+    //       date: form.value.date,
+    //       order_price: localTotal,
+    //     },
+    //   })
+    // );
 
     const $q = useQuasar();
 

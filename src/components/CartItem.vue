@@ -4,6 +4,7 @@
     style="max-width: 1140px"
   >
     <q-img
+
       style="width: 130px; height: 200px"
       alt="Picture"
       :src="require(`../assets/images/` + item.img)"

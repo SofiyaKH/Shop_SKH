@@ -1,3 +1,5 @@
+import { UserService } from "src/services/user.service";
+
 const routes = [
   {
     path: "/auth",
@@ -37,12 +39,29 @@ const routes = [
         },
       },
       {
-        path: "payment",
-        component: () => import("src/pages/Payment.vue"),
         path: "cart",
         component: () => import("src/pages/Cart.vue"),
         beforeEnter: (to, from, next) => {
           if (JSON.parse(localStorage.getItem("token"))) {
+            next();
+          } else {
+            next({ name: "catalog" });
+          }
+        },
+      },
+      {
+        path: "admin/products",
+        component: () => import("src/pages/Admin.vue"),
+        beforeEnter: (to, from, next) => {
+          const token = JSON.parse(localStorage.getItem("token"));
+          if (token) {
+            UserService.getUser(token).then((user) => {
+              if (user.isAdmin) {
+                next();
+              } else {
+                next({ name: "catalog" });
+              }
+            });
             next();
           } else {
             next({ name: "catalog" });

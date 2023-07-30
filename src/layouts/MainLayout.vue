@@ -55,6 +55,14 @@
             <q-item-section> Cart </q-item-section>
           </q-item>
 
+          <q-item to="/admin/products" v-if="isAdmin" exact clickable v-ripple>
+            <q-item-section avatar>
+              <q-icon name="admin_panel" />
+            </q-item-section>
+
+            <q-item-section> Admin </q-item-section>
+          </q-item>
+
           <!-- <q-item to="/chat" exact clickable v-ripple>
             <q-item-section avatar>
               <q-icon name="chat" />
@@ -68,7 +76,7 @@
 
     <q-page-container>
       <router-view v-slot="{ Component }">
-          <component :is="Component" />
+        <component :is="Component" />
       </router-view>
     </q-page-container>
   </q-layout>
@@ -76,9 +84,16 @@
 
 <script setup>
 import { defineComponent, ref } from "vue";
+import { UserService } from "src/services/user.service";
 
 const leftDrawerOpen = ref(false);
 const token = JSON.parse(localStorage.getItem("token"));
+
+const isAdmin = () => {
+  UserService.getUser(token).then((user) => {
+    if (user.isAdmin) return true;
+  });
+};
 </script>
 
 <style scoped>
